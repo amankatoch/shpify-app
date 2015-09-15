@@ -1,0 +1,2 @@
+module ApiMapsHelper
+end

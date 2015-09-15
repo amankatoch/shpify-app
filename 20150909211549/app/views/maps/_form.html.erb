@@ -1,0 +1,6 @@
+<%= bootstrap_form_for(@map, url: update_map_path) do |f| %>
+
+  <%= f.text_field :api_key, label: 'Google Maps API Key' %>
+  <%= f.submit %>
+
+<% end %>

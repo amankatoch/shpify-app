@@ -1,0 +1,1 @@
+json.(@map, :id, :api_key)

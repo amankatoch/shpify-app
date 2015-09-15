@@ -1,0 +1,58 @@
+<script type="text/javascript">
+  ShopifyApp.ready(function(){
+    ShopifyApp.Bar.initialize({
+      title: "Stores",
+      icon: "<%= asset_path('favicon.png') %>",
+      buttons: {
+        secondary: [
+          {
+            label: "Home",
+            href: '<%= root_path %>'
+          },
+          {
+            label: "Stores",
+            href: '<%= stores_path %>',
+            style: 'disabled'
+          },
+          {
+            label: "Map Settings",
+            href: '<%= edit_map_path %>'
+          }
+        ]
+      }
+    });
+  });
+</script>
+
+<p>
+  Download:
+  <%= link_to "CSV", stores_path(format: "csv"), class: 'btn btn-default btn-xs' %>
+  <%= link_to "Excel", stores_path(format: "xls"), class: 'btn btn-default btn-xs' %>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stores.each do |store| %>
+      <tr>
+        <td><%= store.name %></td>
+        <td><%= store.address %></td>
+        <td><%= link_to 'Show', store %></td>
+        <td><%= link_to 'Edit', edit_store_path(store) %></td>
+        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Store', new_store_path, class: "btn btn-default" %>
+<%= link_to "Import Stores", new_store_import_path, class: "btn btn-default" %>

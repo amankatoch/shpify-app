@@ -1,0 +1,46 @@
+<script type="text/javascript">
+  ShopifyApp.ready(function(){
+    ShopifyApp.Bar.initialize({
+      title: "<%= @store.name %>",
+      icon: "<%= asset_path('favicon.png') %>",
+      buttons: {
+        secondary: [
+          {
+            label: "Home",
+            href: '<%= root_path %>'
+          },
+          {
+            label: "Stores",
+            href: '<%= stores_path %>'
+          },
+          {
+            label: "Map Settings",
+            href: '<%= edit_map_path %>'
+          }
+        ]
+      }
+    });
+  });
+</script>
+
+<p>
+  <strong>Name:</strong>
+  <%= @store.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @store.address %>
+</p>
+
+<p>
+  <strong>latitude:</strong>
+  <%= @store.latitude %>
+</p>
+
+<p>
+  <strong>longitude:</strong>
+  <%= @store.longitude %>
+</p>
+
+<%= link_to 'Edit', edit_store_path(@store), class: "btn btn-default" %>

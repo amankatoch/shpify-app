@@ -1,0 +1,97 @@
+<style type="text/css">
+  #map { height: 350px; }
+</style>
+
+<div id="map" data-shop="<%= shop_id %>"></div>
+
+<script>
+// <![CDATA[
+  $(function() {
+
+    var api_key;
+
+    $.ajax({
+      url: '<%= api_map_url %>',
+      type: 'GET',
+      dataType: 'jsonp',
+      data: {shop_id: '<%= shop_id %>'},
+    })
+    .done(function(data) {
+      api_key = data.api_key;
+    });
+    
+
+    var gmaps_src;
+
+    if (api_key === null) {
+      gmaps_src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDRyOwJ9WSn60hTZd62HVUtBbYDrmskXFY&callback=initMap"
+    } else {
+      gmaps_src = 'https://maps.googleapis.com/maps/api/js?key' + api_key + '&callback=initMap'
+    };
+   
+
+    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.defer = true;
+    s.src = gmaps_src;
+    $(s).appendTo($('body'));
+
+  });
+// ]]>
+</script>
+
+<script type="text/javascript">
+// <![CDATA[
+  var map;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    // Get current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        map.setCenter(initialLocation)
+      });
+    }
+
+    // Get stores & show markers
+    $.ajax({
+      url: '<%= api_map_url %>',
+      type: 'GET',
+      dataType: 'jsonp',
+      data: {shop_id: '<%= shop_id %>'},
+    })
+    .done(function(data) {
+      $.each(data.stores, function(idx, store){
+        var marker = new google.maps.Marker({
+          position: {lat: store.latitude, lng: store.longitude},
+          title: store.name
+        });
+        marker.setMap(map);
+
+        var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+ store.name +'</h1>'+
+            '<div id="bodyContent">'+
+            '<p>'+ store.address +'</p>'+
+            '</div>'+
+            '</div>';
+
+        google.maps.event.addListener(marker, 'click', (function(marker) {  
+          return function() {
+            infowindow.close();
+            var content = contentString;  
+            infowindow.setContent(content);  
+            infowindow.open(map, marker);  
+          }  
+        })(marker)); 
+      });
+    });
+
+  }
+// ]]>
+</script>

@@ -1,0 +1,29 @@
+<script type="text/javascript">
+  ShopifyApp.ready(function(){
+    ShopifyApp.Bar.initialize({
+      title: "Home",
+      icon: "<%= asset_path('favicon.png') %>",
+      buttons: {
+        secondary: [
+          {
+            label: "Home",
+            href: '<%= root_path %>',
+            style: 'disabled'
+          },
+          {
+            label: "Stores",
+            href: '<%= stores_path %>'
+          },
+          {
+            label: "Map Settings",
+            href: '<%= edit_map_path %>'
+          }
+        ]
+      }
+    });
+  });
+</script>
+
+<div class="well well-sm text-info">
+  When you install the Store Mapper app, it automatically creates a page in your store at an address that will look something like this: <strong>http://<%= @shop_session.url %>/pages/store-mapper</strong>
+</div>

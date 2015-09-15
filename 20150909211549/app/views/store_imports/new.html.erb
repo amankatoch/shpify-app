@@ -1,0 +1,72 @@
+<script type="text/javascript">
+  ShopifyApp.ready(function(){
+    ShopifyApp.Bar.initialize({
+      title: "Store Import",
+      icon: "<%= asset_path('favicon.png') %>",
+      buttons: {
+        secondary: [
+          {
+            label: "Home",
+            href: '<%= root_path %>'
+          },
+          {
+            label: "Stores",
+            href: '<%= stores_path %>',
+            style: 'disabled'
+          },
+          {
+            label: "Map Settings",
+            href: '<%= edit_map_path %>'
+          }
+        ]
+      }
+    });
+  });
+</script>
+
+<p>A CSV or Excel file can be used to import records. The first row should be the column name. The following columns are allowed.</p>
+
+<ul>
+  <% Store.columns.each do |column| %>
+    <% if column.name.in? ["id", *Store.accessible_attributes] %>
+      <li>
+        <strong><%= column.name %></strong> -
+        <%= column.type.to_s.titleize %> type
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<p>If an <strong>id</strong> is supplied it will update the matching record instead of creating a new one.</p>
+
+<%= bootstrap_form_for @store_import do |f| %>
+  <% if @store_import.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store_import.errors.count, "error") %> prohibited this import from completing:</h2>
+      <ul>
+      <% @store_import.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.file_field :file %>
+  
+  <%= f.submit "Import" %>
+<% end %>
+
+<script>
+$(function() {
+  $('form#new_store_import').submit(function(e) {
+    var $input, $this;
+    $this = $(this);
+    $input = $this.find('input#store_import_file').val();
+    if ($input === '') {
+      alert('you must choose a file');
+      return false;
+      e.preventDefault();
+    }
+  });
+});
+</script>

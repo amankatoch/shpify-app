@@ -1,0 +1,14 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  host: localhost
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+
+production:
+  <<: *default
+  database: shopifymap_production
+  username: shopifymap
+  password: shopifymap
+

@@ -1,0 +1,25 @@
+<script type="text/javascript">
+  ShopifyApp.ready(function(){
+    ShopifyApp.Bar.initialize({
+      title: "Map Settings",
+      icon: "<%= asset_path('favicon.png') %>",
+      buttons: {
+        secondary: [
+          { label: "Home",
+            href: '<%= root_path %>'
+          }, 
+          {
+            label: "Stores",
+            href: '<%= stores_path %>'
+          },
+          { label: "Map Settings",
+            href: '<%= edit_map_path %>',
+            style: 'disabled'
+          }
+        ]
+      }
+    });
+  });
+</script>
+
+<%= render 'form' %>
